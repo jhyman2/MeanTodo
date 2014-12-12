@@ -1,3 +1,5 @@
+Technologies used: Node, npm, bower, express, ejs, body-parser, jquery, (more coming)
+
 -Install Node
 
 -npm init
