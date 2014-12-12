@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>ToDo App</title>
+		<script src="/js/libs/jquery/dist/jquery.min.js"></script>
+
+		<script>
+		$(document).ready(function(){
+
+			function showTodos(todos){
+				var html = '';
+				for(var i = 0; i < todos.length; i++){
+					html += '<li id="' + todos[i].id + '">' + todos[i].text +  '</li>';
+				}
+
+				$('#todoList').html(html);
+			}
+
+			$.ajax({
+				url: '/api/todos',
+				type: 'GET',
+				success: function(res){
+					showTodos(res);
+				},
+				error: function(error){
+					console.log("we suck");
+				}
+			});
+
+			$('#form').submit(function(e){
+				e.preventDefault;
+				$.ajax({
+					url: '/api/todos',
+					type: 'POST',
+					data: {
+						todo: $('input').val().trim()
+					},
+					success: function(res){
+						$('#todoList').append('<li id=' + res._id + '>' + res.text + '</li>');
+						$('input').val('');
+					}
+				});
+				return false;
+			});
+		});
+		</script>
+	</head>
+	<body>
+		<h1>ToDo App</h1>
+		<ul id="todoList">
+		</ul>
+
+		<form id="form" action="/api/todos" method="POST">
+			<input type="text" placeholder = "New task" />
+			<button type="submit">Save New Todo</button>
+		</form>
+	</body>
+</html>
