@@ -1,6 +1,6 @@
 -Install Node
 
--node init
+-npm init
 
 -npm install express --save
 
