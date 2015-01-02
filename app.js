@@ -36,13 +36,28 @@ app.post('/api/todos', function(req, res, next){
 
   if(newTodo){
     todos.push({
-      _id: todos.length + 1,
+      _id: String(todos.length + 1),
       text: newTodo
     });
     res.status(201).send(todos[todos.length - 1]);
   }else{
     res.status(400).send('No data sent!');
   }
+});
+
+app.put('/api/todos/:id', function(req, res, next){
+	var newTodo = req.body || null;
+
+	if (newTodo){
+		for (var i = 0; i < todos.length; i++){
+			if (todos[i]._id === newTodo._id){
+				todos[i] = newTodo;
+			}
+		}
+		res.status(200).send('Todo updated.');
+	} else{
+		res.status(400).send('No task sent.');
+	}
 });
 
 // Delete a task
