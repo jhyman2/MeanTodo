@@ -28,19 +28,36 @@ app.get('/', function (req, res) {
 *	API
 */
 app.get('/api/todos', function(req, res, next){
-	res.send(todos);
+	res.status(200).send(todos);
 });
 
 app.post('/api/todos', function(req, res, next){
-	var newTodo = req.body.todo || null;
-	if (newTodo){
-		todos.push({
-			_id: todos.length + 1,
-			text: newTodo
-		});
-		res.send(200, todos[todos.length - 1]);
-	} else {
-		res.send(500, 'No data sent!');
+  var newTodo = req.body.todo || null;
+
+  if(newTodo){
+    todos.push({
+      _id: todos.length + 1,
+      text: newTodo
+    });
+    res.status(201).send(todos[todos.length - 1]);
+  }else{
+    res.status(400).send('No data sent!');
+  }
+});
+
+// Delete
+app.delete('/api/todos/:id', function(req, res, next){
+	var id = req.params.id || null;
+
+	if(id){
+		for(var i = 0; i < todos.length; i++){
+			if(todos[i]._id === id){
+				todos.splice(i, 1);
+			}
+		}
+		res.status(200).send();
+	}else{
+		res.status(400).send('No id sent.');
 	}
 });
 

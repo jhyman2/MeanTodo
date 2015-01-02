@@ -10,14 +10,14 @@
 		<!-- Styles -->
 		<link rel="stylesheet" href="/js/libs/bootstrap/dist/css/bootstrap.min.css">
 		<link rel="stylesheet" href="/js/libs/font-awesome/css/font-awesome.min.css">
-
+		
 		<script>
 		$(document).ready(function(){
 
 			function showTodos(todos){
 				var html = '';
 				for(var i = 0; i < todos.length; i++){
-					html += '<li id="' + todos[i].id + '"class="list-group-item">' + todos[i].text +  '</li>';
+					html += '<li id="' + todos[i]._id + '"class="list-group-item">' + todos[i].text +  ' <a href="#" class="btn btn-danger btn-xs pull-right"><i class="fa fa-remove"></i></a> </li>';
 				}
 
 				$('#todoList').html(html);
@@ -48,27 +48,59 @@
 						todo: $('input').val().trim()
 					},
 					success: function(res){
-						$('#todoList').append('<li id="' + res._id + '"class="list-group-item">' + res.text + '</li>');
+						$('#todoList').append('<li id="' + res._id + '"class="list-group-item">' + res.text + ' <a href="#" class="btn btn-danger btn-xs pull-right"><i class="fa fa-remove"></i></a> </li>');
 						$('input').val('');
 					},
 					error: function(err){
 						$.bootstrapGrowl(err.responseText, {
-				            type: 'danger',
-				            align: 'center',
-				            width: 'auto',
-				            allow_dismiss: false
-				        });
+	            type: 'danger',
+	            align: 'center',
+	            width: 'auto',
+	            allow_dismiss: false
+		        });
 					}
 				});
 				return false;
 			});
+
+			// Handling the click on remove button
+			$('ul').on('click', 'a', function(e){
+				var itemToDelete = $(e.currentTarget).parent().attr('id');
+				removeItem(itemToDelete);
+			});
+
+			// Send remove AJAX call
+			function removeItem(id){
+				var idSent = id;
+				$.ajax({
+					url: '/api/todos/' + id,
+					type: 'DELETE',
+					success: function(res){
+		        $('#' + idSent).remove();
+						$.bootstrapGrowl('Item successfully removed.', {
+	            type: 'success',
+	            align: 'center',
+	            width: 'auto',
+	            allow_dismiss: true
+		        });
+					},
+					error: function(err){
+						$.bootstrapGrowl(err.responseText, {
+	            type: 'danger',
+	            align: 'center',
+	            width: 'auto',
+	            allow_dismiss: true
+		        });
+					} 
+				});
+			}
 		});
 		</script>
 	</head>
 	<body>
 		<div class="container">
 			<div class="row">
-				<h1>ToDo App</h1>
+				<h1>Todo App</h1>
 			</div>
 			<div class="row">
 				<ul id="todoList" class="list-group">
@@ -77,12 +109,12 @@
 			<div class="row">
 				<form id="form" action="/api/todos" method="POST">
 				<div class="input-group">
-		            <span class="input-group-btn">
-		              <button class="btn btn-success" type="submit">
-		                <i class="fa fa-save"></i>
-		              </button>
-		            </span>
-		            <input type="text" class="form-control" placeholder="New task">
+          <span class="input-group-btn">
+            <button class="btn btn-success" type="submit">
+              <i class="fa fa-save"></i>
+            </button>
+          </span>
+          <input type="text" class="form-control" placeholder="New task">
 				</form>
 			</div>
 		</div>
