@@ -2,7 +2,14 @@
 <html>
 	<head>
 		<title>ToDo App</title>
+		<!-- Scripts -->
 		<script src="/js/libs/jquery/dist/jquery.min.js"></script>
+		<script src="/js/libs/bootstrap/dist/js/bootstrap.min.js"></script>
+		<script src="/js/libs/bootstrap-growl/jquery.bootstrap-growl.min.js"></script>
+
+		<!-- Styles -->
+		<link rel="stylesheet" href="/js/libs/bootstrap/dist/css/bootstrap.min.css">
+		<link rel="stylesheet" href="/js/libs/font-awesome/css/font-awesome.min.css">
 
 		<script>
 		$(document).ready(function(){
@@ -10,7 +17,7 @@
 			function showTodos(todos){
 				var html = '';
 				for(var i = 0; i < todos.length; i++){
-					html += '<li id="' + todos[i].id + '">' + todos[i].text +  '</li>';
+					html += '<li id="' + todos[i].id + '"class="list-group-item">' + todos[i].text +  '</li>';
 				}
 
 				$('#todoList').html(html);
@@ -22,8 +29,13 @@
 				success: function(res){
 					showTodos(res);
 				},
-				error: function(error){
-					console.log("we suck");
+				error: function(err){
+					$.bootstrapGrowl(err.responseText, {
+			            type: 'danger',
+			            align: 'center',
+			            width: 'auto',
+			            allow_dismiss: false
+			        });
 				}
 			});
 
@@ -36,8 +48,16 @@
 						todo: $('input').val().trim()
 					},
 					success: function(res){
-						$('#todoList').append('<li id=' + res._id + '>' + res.text + '</li>');
+						$('#todoList').append('<li id="' + res._id + '"class="list-group-item">' + res.text + '</li>');
 						$('input').val('');
+					},
+					error: function(err){
+						$.bootstrapGrowl(err.responseText, {
+				            type: 'danger',
+				            align: 'center',
+				            width: 'auto',
+				            allow_dismiss: false
+				        });
 					}
 				});
 				return false;
@@ -46,13 +66,25 @@
 		</script>
 	</head>
 	<body>
-		<h1>ToDo App</h1>
-		<ul id="todoList">
-		</ul>
-
-		<form id="form" action="/api/todos" method="POST">
-			<input type="text" placeholder = "New task" />
-			<button type="submit">Save New Todo</button>
-		</form>
+		<div class="container">
+			<div class="row">
+				<h1>ToDo App</h1>
+			</div>
+			<div class="row">
+				<ul id="todoList" class="list-group">
+				</ul>
+			</div>
+			<div class="row">
+				<form id="form" action="/api/todos" method="POST">
+				<div class="input-group">
+		            <span class="input-group-btn">
+		              <button class="btn btn-success" type="submit">
+		                <i class="fa fa-save"></i>
+		              </button>
+		            </span>
+		            <input type="text" class="form-control" placeholder="New task">
+				</form>
+			</div>
+		</div>
 	</body>
 </html>
