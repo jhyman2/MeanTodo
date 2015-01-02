@@ -1,0 +1,7 @@
+.edit {
+  margin-right: 5px;
+}
+
+span[contenteditable] {
+  text-decoration: underline;
+}

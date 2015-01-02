@@ -2,100 +2,10 @@
 <html>
 	<head>
 		<title>ToDo App</title>
-		<!-- Scripts -->
-		<script src="/js/libs/jquery/dist/jquery.min.js"></script>
-		<script src="/js/libs/bootstrap/dist/js/bootstrap.min.js"></script>
-		<script src="/js/libs/bootstrap-growl/jquery.bootstrap-growl.min.js"></script>
 
 		<!-- Styles -->
-		<link rel="stylesheet" href="/js/libs/bootstrap/dist/css/bootstrap.min.css">
-		<link rel="stylesheet" href="/js/libs/font-awesome/css/font-awesome.min.css">
-		
-		<script>
-		$(document).ready(function(){
+		<link rel="stylesheet" href="/css/main.min.css">
 
-			function showTodos(todos){
-				var html = '';
-				for(var i = 0; i < todos.length; i++){
-					html += '<li id="' + todos[i]._id + '"class="list-group-item">' + todos[i].text +  ' <a href="#" class="btn btn-danger btn-xs pull-right"><i class="fa fa-remove"></i></a> </li>';
-				}
-
-				$('#todoList').html(html);
-			}
-
-			$.ajax({
-				url: '/api/todos',
-				type: 'GET',
-				success: function(res){
-					showTodos(res);
-				},
-				error: function(err){
-					$.bootstrapGrowl(err.responseText, {
-			            type: 'danger',
-			            align: 'center',
-			            width: 'auto',
-			            allow_dismiss: false
-			        });
-				}
-			});
-
-			$('#form').submit(function(e){
-				e.preventDefault;
-				$.ajax({
-					url: '/api/todos',
-					type: 'POST',
-					data: {
-						todo: $('input').val().trim()
-					},
-					success: function(res){
-						$('#todoList').append('<li id="' + res._id + '"class="list-group-item">' + res.text + ' <a href="#" class="btn btn-danger btn-xs pull-right"><i class="fa fa-remove"></i></a> </li>');
-						$('input').val('');
-					},
-					error: function(err){
-						$.bootstrapGrowl(err.responseText, {
-	            type: 'danger',
-	            align: 'center',
-	            width: 'auto',
-	            allow_dismiss: false
-		        });
-					}
-				});
-				return false;
-			});
-
-			// Handling the click on remove button
-			$('ul').on('click', 'a', function(e){
-				var itemToDelete = $(e.currentTarget).parent().attr('id');
-				removeItem(itemToDelete);
-			});
-
-			// Send remove AJAX call
-			function removeItem(id){
-				var idSent = id;
-				$.ajax({
-					url: '/api/todos/' + id,
-					type: 'DELETE',
-					success: function(res){
-		        $('#' + idSent).remove();
-						$.bootstrapGrowl('Item successfully removed.', {
-	            type: 'success',
-	            align: 'center',
-	            width: 'auto',
-	            allow_dismiss: true
-		        });
-					},
-					error: function(err){
-						$.bootstrapGrowl(err.responseText, {
-	            type: 'danger',
-	            align: 'center',
-	            width: 'auto',
-	            allow_dismiss: true
-		        });
-					} 
-				});
-			}
-		});
-		</script>
 	</head>
 	<body>
 		<div class="container">
@@ -118,5 +28,12 @@
 				</form>
 			</div>
 		</div>
+
+		<!-- Libs -->
+		<script src="/js/libs/libs.min.js"></script>
+
+		<!-- Scripts -->
+		<script src="/js/main.min.js"></script>
+		
 	</body>
 </html>

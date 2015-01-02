@@ -12,7 +12,7 @@ var todos = [
 *	Configuring Express
 */
 app.set('view engine', 'ejs');
-app.use(express.static(__dirname + '/public'));
+app.use(express.static(__dirname + '/build'));
 app.set('views', __dirname + '/views');
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(bodyParser.json());
@@ -27,16 +27,19 @@ app.get('/', function (req, res) {
 /**
 *	API
 */
+
+// GET
 app.get('/api/todos', function(req, res, next){
 	res.status(200).send(todos);
 });
 
+// POST
 app.post('/api/todos', function(req, res, next){
   var newTodo = req.body.todo || null;
 
   if(newTodo){
     todos.push({
-      _id: todos.length + 1,
+      _id: String(todos.length + 1),
       text: newTodo
     });
     res.status(201).send(todos[todos.length - 1]);
@@ -45,7 +48,23 @@ app.post('/api/todos', function(req, res, next){
   }
 });
 
-// Delete
+// PUT
+app.put('/api/todos/:id', function(req, res, next){
+	var editedTodo = req.body || null;
+
+	if(editedTodo){
+		for(var i = 0; i < todos.length; i++){
+			if(todos[i]._id === editedTodo._id){
+				todos[i] = editedTodo;
+			}
+		}
+		res.status(200).send('Todo updated.');
+	}else{
+		res.status(400).send('No todo data sent.');
+	}
+});
+
+// DELETE
 app.delete('/api/todos/:id', function(req, res, next){
 	var id = req.params.id || null;
 
