@@ -50,7 +50,12 @@ app.delete('/api/todos/:id', function(req, res, next){
 	var id = req.params.id || null;
 
 	if (id){
-		todos.splice((parseInt(id, 10) - 1), 1);
+		for (var i = 0; i < todos.length; i++) {
+			if (todos[i]._id === id){
+				todos.splice(i, 1);
+			}
+		}
+		res.status(200).send();
 	} else {
 		res.status(400).send('No id sent');
 	}

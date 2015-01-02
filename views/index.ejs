@@ -50,6 +50,12 @@
 					success: function(res){
 						$('#todoList').append('<li id="' + res._id + '"class="list-group-item">' + res.text + ' <a href="#" class="btn btn-danger btn-xs pull-right"><i class="fa fa-remove"></i></a></li>');
 						$('input').val('');
+						$.bootstrapGrowl('Task successfully added.', {
+				            type: 'success',
+				            align: 'center',
+				            width: 'auto',
+				            allow_dismiss: false
+				        });
 					},
 					error: function(err){
 						$.bootstrapGrowl(err.responseText, {
@@ -71,25 +77,25 @@
 
 			// Send remove AJAX call
 			function removeItem(id){
+				var idSent = id;
 				$.ajax({
 					url: '/api/todos/' + id,
 					type: 'DELETE',
 					success: function(res){
+				        $('#' + idSent).remove();
 						$.bootstrapGrowl('Task successfully removed.', {
 				            type: 'success',
 				            align: 'center',
 				            width: 'auto',
-				            allow_dismiss: false
+				            allow_dismiss: true
 				        });
-
-				        $('#' + id).remove();
 					},
 					error: function(err){
 						$.bootstrapGrowl(err.responseText, {
 				            type: 'danger',
 				            align: 'center',
 				            width: 'auto',
-				            allow_dismiss: false
+				            allow_dismiss: true
 				        });
 					}
 				});
