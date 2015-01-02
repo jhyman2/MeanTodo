@@ -45,6 +45,17 @@ app.post('/api/todos', function(req, res, next){
   }
 });
 
+// Delete a task
+app.delete('/api/todos/:id', function(req, res, next){
+	var id = req.params.id || null;
+
+	if (id){
+		todos.splice((parseInt(id, 10) - 1), 1);
+	} else {
+		res.status(400).send('No id sent');
+	}
+});
+
 /**
 *	Initializing Server
 */ 
