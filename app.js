@@ -1,13 +1,8 @@
-var express = require('express');
-var app = express();
-var bodyParser = require('body-parser');
-var todos = [
-	{ _id: '1', text: 'Clean my car'},
-	{ _id: '2', text: 'Clean my house'},
-	{ _id: '3', text: 'Clean my computer'},
-	{ _id: '4', text: 'Clean my shrek'},
-	{ _id: '5', text: 'Clean my donkey'}
-];
+var express = require('express'),
+app         = express(),
+bodyParser  = require('body-parser'),
+mongoose    = require('mongoose');
+
 /**
 *	Configuring Express
 */
@@ -16,6 +11,18 @@ app.use(express.static(__dirname + '/build'));
 app.set('views', __dirname + '/views');
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(bodyParser.json());
+
+/**
+ * Connect to DB
+ */
+
+mongoose.connect('mongodb://localhost/meantodo');
+
+/**
+ * Models
+ */
+
+var Todo = mongoose.model('Todo', { text: { type: String, required: true } });
 
 /**
 *	Routes
@@ -30,19 +37,28 @@ app.get('/', function (req, res) {
 
 // GET
 app.get('/api/todos', function(req, res, next){
-	res.status(200).send(todos);
+  Todo.find({}, function(err, docs){
+    if(err){
+      next(err);
+    }else{
+      res.status(200).send(docs);
+    }
+  });
 });
 
 // POST
 app.post('/api/todos', function(req, res, next){
-  var newTodo = req.body.todo || null;
+  var newTodo = req.body || null;
 
   if(newTodo){
-    todos.push({
-      _id: String(todos.length + 1),
-      text: newTodo
+    var todoDB = new Todo(newTodo);
+    todoDB.save(function(err, doc){
+      if(err){
+        next(err);
+      }else{
+        res.status(201).send(doc);
+      }
     });
-    res.status(201).send(todos[todos.length - 1]);
   }else{
     res.status(400).send('No data sent!');
   }
@@ -50,15 +66,21 @@ app.post('/api/todos', function(req, res, next){
 
 // PUT
 app.put('/api/todos/:id', function(req, res, next){
-	var editedTodo = req.body || null;
+  var id = req.params.id || null,
+  text   = req.body.text || null;
 
-	if(editedTodo){
-		for(var i = 0; i < todos.length; i++){
-			if(todos[i]._id === editedTodo._id){
-				todos[i] = editedTodo;
-			}
-		}
-		res.status(200).send('Todo updated.');
+	if(text && id){
+    Todo.findOne({_id: id}, function(err, doc){
+      if(err){
+        next(err);
+      }else{
+        doc.text = text;
+
+        doc.save(function(err, updated){
+		      res.status(200).send(updated);
+        });
+      }
+    });
 	}else{
 		res.status(400).send('No todo data sent.');
 	}
@@ -69,12 +91,13 @@ app.delete('/api/todos/:id', function(req, res, next){
 	var id = req.params.id || null;
 
 	if(id){
-		for(var i = 0; i < todos.length; i++){
-			if(todos[i]._id === id){
-				todos.splice(i, 1);
-			}
-		}
-		res.status(200).send();
+	  Todo.remove({_id: id}, function(err){
+      if(err){
+        next(err);
+      }else{
+		    res.status(200).send();
+      }
+    });
 	}else{
 		res.status(400).send('No id sent.');
 	}

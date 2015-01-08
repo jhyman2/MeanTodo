@@ -68,7 +68,7 @@ $(document).ready(function(){
       url: '/api/todos',
       type: 'POST',
       data: {
-        todo: $('input').val().trim()
+        text: $('input').val().trim()
       },
       success: function(res){
         $('#todoList').append('<li id="' + res._id + '"class="list-group-item">' + 
@@ -105,7 +105,6 @@ $(document).ready(function(){
         url: '/api/todos/' + theItem.parent().attr('id'),
         type: 'PUT',
         data: {
-          _id: theItem.parent().attr('id'),
           text: theItem.parent().children('span').text()
         },
         success: function(res){
