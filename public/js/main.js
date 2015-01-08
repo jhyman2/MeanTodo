@@ -66,7 +66,7 @@ $(document).ready(function(){
 			url: '/api/todos',
 			type: 'POST',
 			data: {
-				todo: $('input').val().trim()
+				text: $('input').val().trim()
 			},
 			success: function(res){
 				$('#todoList').append('<li id="' + res._id + '"class="list-group-item"><span class="theText">' + res.text + '</span> <a href="#" class=" delete btn btn-danger btn-xs pull-right"><i class="fa fa-remove"></i></a><a href="#" class="edit btn btn-info btn-xs pull-right"><i class="fa fa-edit"></i></a></li>');
