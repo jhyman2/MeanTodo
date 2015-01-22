@@ -1,15 +1,50 @@
 $(document).ready(function(){
 
+  // Model
+  Todo = Backbone.Model.extend({
+    idAttribute: '_id'
+  });
+
+  // Collection
+  Todos = Backbone.Collection.extend({
+    url: '/api/todos',
+    model: Todo
+  });
+
+  // Fetching backbone collection
+  var collection = new Todos();
+
+  collection.fetch({
+    success: function(){
+      showTodos();
+    },
+    error: function(err){
+      $.bootstrapGrowl(err.responseText, {
+        type: 'danger',
+        align: 'center',
+        width: 'auto',
+        allow_dismiss: false
+      });
+    }
+  });
+
+  // Events
+  collection.on('add', function(e){
+    console.log('New todo created', e);
+  });
+
+
   // Show todos in todo list
-  function showTodos(todos){
+  function showTodos(){
     var html = '';
-    for(var i = 0; i < todos.length; i++){
-      html += '<li id="' + todos[i]._id + '"class="list-group-item">' + 
-      '<span class="theText">' + todos[i].text + '</span>' + 
+
+    _.each(collection.models, function(model){
+      html += '<li id="' + model.get('_id') + '"class="list-group-item">' + 
+      '<span class="theText">' + model.get('text') + '</span>' + 
       '<a href="#" class="delete btn btn-danger btn-xs pull-right"><i class="fa fa-remove"></i></a>' +
       '<a href="#" class="edit btn btn-info btn-xs pull-right"><i class="fa fa-edit"></i></a>' +
       '</li>';
-    }
+    });
 
     $('#todoList').html(html);
   }
@@ -40,53 +75,42 @@ $(document).ready(function(){
     });
   }
 
-  // Getting todos
-  $.ajax({
-    url: '/api/todos',
-    type: 'GET',
-    success: function(res){
-      showTodos(res);
-    },
-    error: function(err){
-      $.bootstrapGrowl(err.responseText, {
-        type: 'danger',
-        align: 'center',
-        width: 'auto',
-        allow_dismiss: false
-      });
-    }
-  });
-
   /**
    * Event handlers this file changed.
    */
 
   // Handles the form submission
   $('#form').submit(function(e){
-    e.preventDefault;
-    $.ajax({
-      url: '/api/todos',
-      type: 'POST',
-      data: {
-        text: $('input').val().trim()
-      },
-      success: function(res){
-        $('#todoList').append('<li id="' + res._id + '"class="list-group-item">' + 
-          '<span class="theText">' + res.text + '</span>' + 
-          ' <a href="#" class="delete btn btn-danger btn-xs pull-right"><i class="fa fa-remove"></i></a>' +
-          '<a href="#" class="edit btn btn-info btn-xs pull-right"><i class="fa fa-edit"></i></a>' +
-          ' </li>');
-        $('input').val('');
-      },
-      error: function(err){
-        $.bootstrapGrowl(err.responseText, {
-          type: 'danger',
-          align: 'center',
-          width: 'auto',
-          allow_dismiss: false
-        });
-      }
+    e.preventDefault();
+
+    collection.create({
+      text: $('input').val().trim()
     });
+
+
+    // $.ajax({
+    //   url: '/api/todos',
+    //   type: 'POST',
+    //   data: {
+    //     text: $('input').val().trim()
+    //   },
+    //   success: function(res){
+    //     $('#todoList').append('<li id="' + res._id + '"class="list-group-item">' + 
+    //       '<span class="theText">' + res.text + '</span>' + 
+    //       ' <a href="#" class="delete btn btn-danger btn-xs pull-right"><i class="fa fa-remove"></i></a>' +
+    //       '<a href="#" class="edit btn btn-info btn-xs pull-right"><i class="fa fa-edit"></i></a>' +
+    //       ' </li>');
+    //     $('input').val('');
+    //   },
+    //   error: function(err){
+    //     $.bootstrapGrowl(err.responseText, {
+    //       type: 'danger',
+    //       align: 'center',
+    //       width: 'auto',
+    //       allow_dismiss: false
+    //     });
+    //   }
+    // });
     return false;
   });
 
