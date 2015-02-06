@@ -28,26 +28,22 @@ $(document).ready(function(){
     }
   });
 
-  // Events
-  collection.on('add', function(e){
-    console.log('New todo created', e);
-  });
+  /**
+   * Backbone Collection Events
+   */
 
-
-  // Show todos in todo list
-  function showTodos(){
+  // Add new item to list
+  collection.on('add', function(model){
     var html = '';
 
-    _.each(collection.models, function(model){
-      html += '<li id="' + model.get('_id') + '"class="list-group-item">' + 
-      '<span class="theText">' + model.get('text') + '</span>' + 
-      '<a href="#" class="delete btn btn-danger btn-xs pull-right"><i class="fa fa-remove"></i></a>' +
-      '<a href="#" class="edit btn btn-info btn-xs pull-right"><i class="fa fa-edit"></i></a>' +
-      '</li>';
-    });
+    html += '<li id="' + model.get('_id') + '"class="list-group-item">' + 
+    '<span class="theText">' + model.get('text') + '</span>' + 
+    '<a href="#" class="delete btn btn-danger btn-xs pull-right"><i class="fa fa-remove"></i></a>' +
+    '<a href="#" class="edit btn btn-info btn-xs pull-right"><i class="fa fa-edit"></i></a>' +
+    '</li>';
 
     $('#todoList').html(html);
-  }
+  });
 
   // Removes item in todo list
   function removeItem(id){
