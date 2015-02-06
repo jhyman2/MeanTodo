@@ -15,9 +15,6 @@ $(document).ready(function(){
   var collection = new Todos();
 
   collection.fetch({
-    success: function(){
-      console.log('Fetched the todos!');
-    },
     error: function(err){
       $.bootstrapGrowl(err.responseText, {
         type: 'danger',
@@ -51,19 +48,44 @@ $(document).ready(function(){
     $('#' + model.get('_id')).remove();
   });
 
+  // Update collection event
+  collection.on('change', function(model){
+    var item = $('#' + model.get('_id'));
+
+    item.children('span').removeAttr('contenteditable');
+    item.children('.edit').removeClass('btn-success').addClass('btn-info');
+    item.children('.edit').children('i').removeClass('fa-save').addClass('fa-edit');
+  });
+
   // Removes item in todo list
   function removeItem(id){
     var model = collection.findWhere({_id: id});
     model.destroy();
   }
 
+  // Updates an item
+  function updateItem(id, text){
+    var model = collection.findWhere({'_id': id});
+    model.set('text', text);
+    model.save();
+  }
+
   // Handles the form submission
   $('#form').submit(function(e){
     e.preventDefault();
 
-    collection.create({
-      text: $('input').val().trim()
-    }, { wait: true });
+    collection.create({ text: $('input').val().trim() }, 
+    { 
+      wait: true,
+      error: function(model){
+        $.bootstrapGrowl('Failed to add model.', {
+          type: 'danger',
+          align: 'center',
+          width: 'auto',
+          allow_dismiss: false
+        });
+      }
+    });
   });
 
   // Handling the click on remove button
@@ -77,32 +99,7 @@ $(document).ready(function(){
     var theItem = $(e.currentTarget);
 
     if(typeof(theItem.parent().children('span').attr('contenteditable')) !== 'undefined'){
-      $.ajax({
-        url: '/api/todos/' + theItem.parent().attr('id'),
-        type: 'PUT',
-        data: {
-          text: theItem.parent().children('span').text()
-        },
-        success: function(res){
-          theItem.parent().children('span').removeAttr('contenteditable');
-          theItem.removeClass('btn-success').addClass('btn-info');
-          theItem.children('i').removeClass('fa-save').addClass('fa-edit');
-          $.bootstrapGrowl('Successfully updated.', {
-            type: 'success',
-            align: 'center',
-            width: 'auto',
-            allow_dismiss: false
-          });
-        },
-        error: function(err){
-          $.bootstrapGrowl(err.responseText, {
-            type: 'danger',
-            align: 'center',
-            width: 'auto',
-            allow_dismiss: false
-          });
-        }
-      });
+      updateItem(theItem.parent().attr('id'), theItem.parent().children('span').text());
     }else{
       theItem.parent().children('span').attr('contenteditable', true);
       theItem.removeClass('btn-info').addClass('btn-success');
