@@ -16,7 +16,7 @@ $(document).ready(function(){
 
   collection.fetch({
     success: function(){
-      showTodos();
+      console.log('Fetched the todos!');
     },
     error: function(err){
       $.bootstrapGrowl(err.responseText, {
@@ -42,38 +42,20 @@ $(document).ready(function(){
     '<a href="#" class="edit btn btn-info btn-xs pull-right"><i class="fa fa-edit"></i></a>' +
     '</li>';
 
-    $('#todoList').html(html);
+    $('#todoList').append(html);
+    $('input').val('');
+  });
+
+  // Remove collection event
+  collection.on('remove', function(model){
+    $('#' + model.get('_id')).remove();
   });
 
   // Removes item in todo list
   function removeItem(id){
-    var idSent = id;
-    $.ajax({
-      url: '/api/todos/' + id,
-      type: 'DELETE',
-      success: function(res){
-        $('#' + idSent).remove();
-        $.bootstrapGrowl('Item successfully removed.', {
-          type: 'success',
-          align: 'center',
-          width: 'auto',
-          allow_dismiss: true
-        });
-      },
-      error: function(err){
-        $.bootstrapGrowl(err.responseText, {
-          type: 'danger',
-          align: 'center',
-          width: 'auto',
-          allow_dismiss: true
-        });
-      } 
-    });
+    var model = collection.findWhere({_id: id});
+    model.destroy();
   }
-
-  /**
-   * Event handlers this file changed.
-   */
 
   // Handles the form submission
   $('#form').submit(function(e){
@@ -81,33 +63,7 @@ $(document).ready(function(){
 
     collection.create({
       text: $('input').val().trim()
-    });
-
-
-    // $.ajax({
-    //   url: '/api/todos',
-    //   type: 'POST',
-    //   data: {
-    //     text: $('input').val().trim()
-    //   },
-    //   success: function(res){
-    //     $('#todoList').append('<li id="' + res._id + '"class="list-group-item">' + 
-    //       '<span class="theText">' + res.text + '</span>' + 
-    //       ' <a href="#" class="delete btn btn-danger btn-xs pull-right"><i class="fa fa-remove"></i></a>' +
-    //       '<a href="#" class="edit btn btn-info btn-xs pull-right"><i class="fa fa-edit"></i></a>' +
-    //       ' </li>');
-    //     $('input').val('');
-    //   },
-    //   error: function(err){
-    //     $.bootstrapGrowl(err.responseText, {
-    //       type: 'danger',
-    //       align: 'center',
-    //       width: 'auto',
-    //       allow_dismiss: false
-    //     });
-    //   }
-    // });
-    return false;
+    }, { wait: true });
   });
 
   // Handling the click on remove button
