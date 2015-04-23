@@ -24,5 +24,4 @@ body {
 .container {
   background-color: $fourth-color;
   @include border-radius(10px);
-  @include spin;
 }
