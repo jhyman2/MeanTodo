@@ -1,0 +1,16 @@
+// @mixin spin {
+//   -webkit-animation:spin 200s linear infinite;
+//   -moz-animation:spin 200s linear infinite;
+//   animation:spin 200s linear infinite;
+// }
+
+@mixin border-radius($radius) {
+  -webkit-border-radius: $radius;
+     -moz-border-radius: $radius;
+      -ms-border-radius: $radius;
+          border-radius: $radius;
+}
+
+@-moz-keyframes spin { 100% { -moz-transform: rotate(360deg); } }
+@-webkit-keyframes spin { 100% { -webkit-transform: rotate(360deg); } }
+@keyframes spin { 100% { -webkit-transform: rotate(360deg); transform:rotate(360deg); } }
