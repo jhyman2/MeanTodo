@@ -1,7 +1,37 @@
+@-moz-keyframes spin {
+  100% {
+    -moz-transform: rotate(360deg); } }
+
+@-webkit-keyframes spin {
+  100% {
+    -webkit-transform: rotate(360deg); } }
+
+@keyframes spin {
+  100% {
+    -webkit-transform: rotate(360deg);
+    transform: rotate(360deg); } }
+
+h1 {
+  color: #468966; }
+
 .edit {
-  margin-right: 5px;
-}
+  margin-right: 5px; }
 
 span[contenteditable] {
-  text-decoration: underline;
-}
+  text-decoration: underline; }
+
+li {
+  background-color: #FFB03B !important; }
+
+body {
+  background-color: #FFF0A5; }
+
+.container {
+  background-color: #B64926;
+  -webkit-border-radius: 10px;
+  -moz-border-radius: 10px;
+  -ms-border-radius: 10px;
+  border-radius: 10px;
+  -webkit-animation: spin 20s linear infinite;
+  -moz-animation: spin 20s linear infinite;
+  animation: spin 20s linear infinite; }

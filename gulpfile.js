@@ -2,8 +2,10 @@ var gulp  = require('gulp'),
 uglify    = require('gulp-uglify'),
 rename    = require('gulp-rename'),
 concat    = require('gulp-concat'),
+sass      = require('gulp-sass'),
 concatCSS = require('gulp-concat-css'),
-uglifyCSS = require('gulp-minify-css');
+uglifyCSS = require('gulp-minify-css'),
+del       = require('del');
 
 // Copy JS
 gulp.task('copyJS', function() {
@@ -27,7 +29,7 @@ gulp.task('copyCSS', function() {
       './bower_components/bootstrap/dist/css/bootstrap.css.map',
       './bower_components/font-awesome/css/font-awesome.css'
     ])
-    .pipe(gulp.dest('./public/css/'));
+    .pipe(gulp.dest('./public/vendor/'));
 });
 
 // Copy Fonts
@@ -40,6 +42,18 @@ gulp.task('copyFonts', function() {
       './bower_components/font-awesome/fonts/FontAwesome.otf'
     ])
     .pipe(gulp.dest('./public/fonts/'));
+});
+
+// Sass
+gulp.task('sass', function () {
+  gulp.src('./public/scss/*.scss')
+    .pipe(sass())
+    .pipe(gulp.dest('./public/css'));
+});
+
+// Clean
+gulp.task('clean', function (cb) {
+  del(['./build/**'], cb);
 });
 
 // Libraries
@@ -62,7 +76,10 @@ gulp.task('libs', function() {
 
 // Styles
 gulp.task('styles', function() {
-  return gulp.src('./public/css/*.css')
+  return gulp.src([
+      './public/vendor/*.css',
+      './public/css/*.css'
+    ])
     .pipe(concatCSS('main.all.css'))
     .pipe(uglifyCSS())
     .pipe(rename('main.min.css'))
@@ -85,14 +102,18 @@ gulp.task('scripts', function() {
 
 // Watch Files For Changes
 gulp.task('watch', function() {
-    gulp.watch('./public/js/**/*.js', ['libs', 'styles', 'fonts', 'scripts']);
+  gulp.watch([
+    './public/js/**/*.js',
+    './public/scss/**.scss'
+  ],
+  ['libs', 'sass', 'styles', 'fonts', 'scripts']);
 });
 
 // Bowercopy
 gulp.task('bowercopy', ['copyJS', 'copyCSS', 'copyFonts']);
 
 // Build
-gulp.task('build', ['libs', 'styles', 'fonts', 'scripts']);
+gulp.task('build', ['libs', 'sass', 'styles', 'fonts', 'scripts']);
 
 // Default Task
 gulp.task('default', ['watch']);
