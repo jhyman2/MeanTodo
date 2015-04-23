@@ -1,0 +1,27 @@
+@import 'variables';
+@import 'mixins';
+
+h1 {
+  color: $primary-color;
+}
+
+.edit {
+  margin-right: 5px;
+}
+
+span[contenteditable] {
+  text-decoration: underline;
+}
+
+li {
+  background-color: $third-color !important;
+}
+
+body {
+  background-color: $secondary-color;
+}
+
+.container {
+  background-color: $fourth-color;
+  @include border-radius(10px);
+}
