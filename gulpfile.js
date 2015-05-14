@@ -18,7 +18,7 @@ gulp.task('copyJS', function() {
       './bower_components/backbone.babysitter/lib/backbone.babysitter.js',
       './bower_components/backbone.wreqr/lib/backbone.wreqr.js',
       './bower_components/marionette/lib/core/backbone.marionette.js',
-      './bower_components/materialize/dist/js/materialize.js'
+      // './bower_components/materialize/dist/js/materialize.js'
     ])
     .pipe(gulp.dest('./public/js/libs/'));
 });
