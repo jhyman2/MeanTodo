@@ -33,13 +33,13 @@ $(document).ready(function(){
   collection.on('add', function(model){
     var html = '';
 
-    html += '<li id="' + model.get('_id') + '"class="list-group-item">' + 
-    '<span class="theText">' + model.get('text') + '</span>' + 
+    html += '<li id="' + model.get('_id') + '"class="list-group-item">' +
+    '<span class="theText">' + model.get('text') + '</span>' +
     '<a href="#" class="delete btn btn-danger btn-xs pull-right"><i class="fa fa-remove"></i></a>' +
     '<a href="#" class="edit btn btn-info btn-xs pull-right"><i class="fa fa-edit"></i></a>' +
     '</li>';
 
-    $('#todoList').append(html);
+    $('#todoList').prepend(html);
     $('input').val('');
   });
 
@@ -74,8 +74,8 @@ $(document).ready(function(){
   $('#form').submit(function(e){
     e.preventDefault();
 
-    collection.create({ text: $('input').val().trim() }, 
-    { 
+    collection.create({ text: $('input').val().trim() },
+    {
       wait: true,
       error: function(model){
         $.bootstrapGrowl('Failed to add model.', {
