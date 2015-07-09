@@ -4,8 +4,8 @@
 * Routes
 */
 
-module.exports = function(app){
-  app.get('/', function (req, res) {
-    res.render('index.ejs');
-  });
-};
+module.exports = (app) => {
+  app.get('/', (req, res) => {
+    res.render('index.ejs')
+  })
+}
