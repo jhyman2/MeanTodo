@@ -17,7 +17,8 @@ gulp.task('copyJS', function() {
       './bower_components/backbone/backbone.js',
       './bower_components/backbone.babysitter/lib/backbone.babysitter.js',
       './bower_components/backbone.wreqr/lib/backbone.wreqr.js',
-      './bower_components/marionette/lib/core/backbone.marionette.js'
+      './bower_components/marionette/lib/core/backbone.marionette.js',
+      // './bower_components/materialize/dist/js/materialize.js'
     ])
     .pipe(gulp.dest('./public/js/libs/'));
 });
@@ -27,7 +28,8 @@ gulp.task('copyCSS', function() {
   return gulp.src([
       './bower_components/bootstrap/dist/css/bootstrap.css',
       './bower_components/bootstrap/dist/css/bootstrap.css.map',
-      './bower_components/font-awesome/css/font-awesome.css'
+      './bower_components/font-awesome/css/font-awesome.css',
+      './bower_components/materialize/dist/css/materialize.css'
     ])
     .pipe(gulp.dest('./public/vendor/'));
 });
@@ -39,7 +41,8 @@ gulp.task('copyFonts', function() {
       './bower_components/font-awesome/fonts/fontawesome-webfont.svg',
       './bower_components/font-awesome/fonts/fontawesome-webfont.ttf',
       './bower_components/font-awesome/fonts/fontawesome-webfont.woff',
-      './bower_components/font-awesome/fonts/FontAwesome.otf'
+      './bower_components/font-awesome/fonts/FontAwesome.otf',
+      './bower_components/materialize/dist/font/**/*'
     ])
     .pipe(gulp.dest('./public/fonts/'));
 });
