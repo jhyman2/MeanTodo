@@ -24,9 +24,9 @@ require('./api')(app);
 /**
 *	Initializing Server
 */
-var server = app.listen(3000, function () {
+var server = app.listen(3000, () => {
   var host = 'localhost';
-  var port = server.address().port;
+  var port = this.address().port;
 
   console.log('Example app listening at http://%s:%s', host, port);
 });

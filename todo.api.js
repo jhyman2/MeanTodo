@@ -6,8 +6,8 @@
 
 var Todo = require('./Todo');
 
-exports.get = function(req, res, next){
-  Todo.find({}, function(err, docs){
+exports.get = (req, res, next) => {
+  Todo.find({}, (err, docs) => {
     if(err){
       next(err);
     }else{
@@ -16,12 +16,12 @@ exports.get = function(req, res, next){
   });
 };
 
-exports.create = function(req, res, next){
+exports.create = (req, res, next) => {
   var newTodo = req.body || null;
 
   if(newTodo){
     var todoDB = new Todo(newTodo);
-    todoDB.save(function(err, doc){
+    todoDB.save((err, doc) => {
       if(err){
         next(err);
       }else{
@@ -33,18 +33,18 @@ exports.create = function(req, res, next){
   }
 };
 
-exports.update = function(req, res, next){
+exports.update = (req, res, next) => {
   var id = req.params.id || null,
   text   = req.body.text || null;
 
   if(text && id){
-    Todo.findOne({_id: id}, function(err, doc){
+    Todo.findOne({_id: id}, (err, doc) => {
       if(err){
         next(err);
       }else{
         doc.text = text;
 
-        doc.save(function(err, updated){
+        doc.save((err, updated) => {
           res.status(200).send(updated);
         });
       }
@@ -54,11 +54,11 @@ exports.update = function(req, res, next){
   }
 };
 
-exports.delete = function(req, res, next){
+exports.delete = (req, res, next) => {
   var id = req.params.id || null;
 
   if(id){
-    Todo.remove({_id: id}, function(err){
+    Todo.remove({_id: id}, (err) => {
       if(err){
         next(err);
       }else{
