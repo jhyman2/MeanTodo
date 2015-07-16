@@ -14,14 +14,36 @@ span[contenteditable] {
 }
 
 li {
-  background-color: $third-color !important;
+  
 }
 
 body {
-  background-color: $secondary-color;
+  
 }
 
 .container {
-  background-color: $fourth-color;
-  @include border-radius(10px);
+  
+}
+
+.create {
+  padding: 0px;
+}
+
+.delete {
+  padding: 0px;
+}
+
+.edit {
+  padding: 0px;
+}
+
+.btn {
+  height: 35px;
+  width: 35px;
+  margin-top: -5px;
+}
+
+#newTask {
+  margin-left: 10px;
+  margin-top: -15px;
 }
