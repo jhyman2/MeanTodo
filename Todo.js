@@ -4,8 +4,8 @@
  * Todo model
  */
 
-var mongoose = require('mongoose');
+var mongoose = require('mongoose')
 
 module.exports = mongoose.model('Todo', {
   text: { type: String, required: true }
-});
+})
