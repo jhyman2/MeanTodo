@@ -99,7 +99,7 @@ gulp.task('fonts', function() {
 // Uglify JS
 gulp.task('scripts', function() {
   return gulp.src('./public/js/*.js')
-    .pipe(babel())
+    .pipe(babel({ blacklist: ['useStrict']}))
     .pipe(uglify())
     .pipe(rename('main.min.js'))
     .pipe(gulp.dest('./build/js/'));
