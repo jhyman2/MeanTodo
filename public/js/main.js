@@ -33,16 +33,16 @@ $(document).ready(function(){
   collection.on('add', function(model){
     var html = '';
 
-    html += '<li>' +
-      '<div id="' + model.get('_id') + '" class="collapsible-header"><i class="mdi-image-filter-drama"></i>' + model.get('text') + '</div>'+
-      '<div class="collapsible-body"><p>' + model.get('text') + '</p></div>'+
-    '</li>';
-
-    // html += '<li id="' + model.get('_id') + '"class="list-group-item">' +
-    // '<span class="theText">' + model.get('text') + '</span>' +
-    // '<a href="#" class="delete btn btn-danger btn-xs pull-right"><i class="fa fa-remove"></i></a>' +
-    // '<a href="#" class="edit btn btn-info btn-xs pull-right"><i class="fa fa-edit"></i></a>' +
+    // html += '<li>' +
+    //   '<div id="' + model.get('_id') + '" class="collection-item"><i class="mdi-image-filter-drama"></i>' + model.get('text') + '</div>'+
+    //   '<div class="collapsible-body"><p>' + model.get('text') + '</p></div>'+
     // '</li>';
+
+    html += '<li id="' + model.get('_id') + '"class="collection-item">' +
+    '<span class="theText">' + model.get('text') + '</span>' +
+    '<a href="#" class="delete btn btn-xs pull-right red"><i class="fa fa-remove"></i></a>' +
+    '<a href="#" class="edit btn btn-info btn-xs pull-right"><i class="fa fa-edit"></i></a>' +
+    '</li>';
 
     $('#todoList').prepend(html);
     $('input').val('');

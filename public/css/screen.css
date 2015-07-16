@@ -1,3 +1,5 @@
+/* Fonts */
+/* Colors */
 @-moz-keyframes spin {
   100% {
     -moz-transform: rotate(360deg); } }
@@ -20,15 +22,20 @@ h1 {
 span[contenteditable] {
   text-decoration: underline; }
 
-li {
-  background-color: #FFB03B !important; }
+.create {
+  padding: 0px; }
 
-body {
-  background-color: #FFF0A5; }
+.delete {
+  padding: 0px; }
 
-.container {
-  background-color: #B64926;
-  -webkit-border-radius: 10px;
-  -moz-border-radius: 10px;
-  -ms-border-radius: 10px;
-  border-radius: 10px; }
+.edit {
+  padding: 0px; }
+
+.btn {
+  height: 35px;
+  width: 35px;
+  margin-top: -5px; }
+
+#newTask {
+  margin-left: 10px;
+  margin-top: -15px; }

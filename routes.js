@@ -1,7 +1,10 @@
 'use strict';
 
 /**
-* Routes
-*/
-
-module.exports = app => app.get('/', (req, res) => res.render('index.ejs'))
+ * Routes
+ */
+module.exports = (app) => {
+  app.get('/', (req, res) => {
+    res.render('index.ejs')
+  })
+}
