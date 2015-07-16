@@ -12,18 +12,18 @@
 				<h1>Todo App</h1>
 			</div>
 			<div class="row">
-				<ul id="todoList" class="collapsible" data-collapsible="accordion">
+				<ul id="todoList" class="collection">
 				</ul>
 			</div>
 			<div class="row">
 				<form id="form" action="/api/todos" method="POST">
 				<div class="input-group">
           <span class="input-group-btn">
-            <button class="btn btn-success" type="submit">
+            <button class="create btn btn-success" type="submit">
               <i class="fa fa-save"></i>
             </button>
           </span>
-          <input type="text" class="form-control" placeholder="New task">
+          <input id="newTask" type="text" class="form-control" placeholder="New task">
 				</form>
 			</div>
 		</div>
