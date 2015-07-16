@@ -5,7 +5,8 @@ concat    = require('gulp-concat'),
 sass      = require('gulp-sass'),
 concatCSS = require('gulp-concat-css'),
 uglifyCSS = require('gulp-minify-css'),
-del       = require('del');
+del       = require('del'),
+babel     = require('gulp-babel');
 
 // Copy JS
 gulp.task('copyJS', function() {
@@ -17,8 +18,7 @@ gulp.task('copyJS', function() {
       './bower_components/backbone/backbone.js',
       './bower_components/backbone.babysitter/lib/backbone.babysitter.js',
       './bower_components/backbone.wreqr/lib/backbone.wreqr.js',
-      './bower_components/marionette/lib/core/backbone.marionette.js',
-      // './bower_components/materialize/dist/js/materialize.js'
+      './bower_components/marionette/lib/core/backbone.marionette.js'
     ])
     .pipe(gulp.dest('./public/js/libs/'));
 });
@@ -98,6 +98,7 @@ gulp.task('fonts', function() {
 // Uglify JS
 gulp.task('scripts', function() {
   return gulp.src('./public/js/*.js')
+    .pipe(babel({ blacklist: ["useStrict"] }))
     .pipe(uglify())
     .pipe(rename('main.min.js'))
     .pipe(gulp.dest('./build/js/'));
